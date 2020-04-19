@@ -223,6 +223,7 @@ public class SpringApplication {
 	 * @see #SpringApplication(ResourceLoader, Object...)
 	 */
 	public SpringApplication(Object... sources) {
+		// 初始化
 		initialize(sources);
 	}
 
@@ -247,8 +248,11 @@ public class SpringApplication {
 			this.sources.addAll(Arrays.asList(sources));
 		}
 		this.webEnvironment = deduceWebEnvironment();
+		// 从spring.factories中读取Initializer,Listener，在spring-boot.jar,spring-boot-autoconfigure.jar中
+		// 这些组件做什么用待分析
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+		// 推断主类
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
@@ -291,12 +295,17 @@ public class SpringApplication {
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting();
 		try {
+			// 命令行参数
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+			// 准备环境
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
 			Banner printedBanner = printBanner(environment);
+			// 创建ApplicationContext，new AnnotationConfigEmbeddedWebApplicationContext()
 			context = createApplicationContext();
 			analyzers = new FailureAnalyzers(context);
+			// 将环境设置到ApplicationContext等
 			prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+			// spring容器refresh，重要
 			refreshContext(context);
 			afterRefresh(context, applicationArguments);
 			listeners.finished(context, null);

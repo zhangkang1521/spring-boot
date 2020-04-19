@@ -132,6 +132,7 @@ public class EmbeddedWebApplicationContext extends GenericWebApplicationContext 
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
+			// spring容器refresh中会调用onRefresh
 			createEmbeddedServletContainer();
 		}
 		catch (Throwable ex) {
@@ -155,9 +156,11 @@ public class EmbeddedWebApplicationContext extends GenericWebApplicationContext 
 	}
 
 	private void createEmbeddedServletContainer() {
+		//
 		EmbeddedServletContainer localContainer = this.embeddedServletContainer;
 		ServletContext localServletContext = getServletContext();
 		if (localContainer == null && localServletContext == null) {
+			// 默认是Tomcat
 			EmbeddedServletContainerFactory containerFactory = getEmbeddedServletContainerFactory();
 			this.embeddedServletContainer = containerFactory.getEmbeddedServletContainer(getSelfInitializer());
 		}
