@@ -56,7 +56,7 @@ import org.springframework.util.ObjectUtils;
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(ServerProperties.class)
 @Import({ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
-		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
+		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class, // tomcat优先级最高
 		ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
 		ServletWebServerFactoryConfiguration.EmbeddedUndertow.class })
 public class ServletWebServerFactoryAutoConfiguration {

@@ -50,11 +50,14 @@ import org.springframework.context.annotation.Configuration;
  */
 class ServletWebServerFactoryConfiguration {
 
+	// 在ServletWebServerFactoryAutoConfiguration中被@Import
 	@Configuration
 	@ConditionalOnClass({ Servlet.class, Tomcat.class, UpgradeProtocol.class })
+	// 约定优于配置，如果自己配置了，这里就不会初始化
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
 	public static class EmbeddedTomcat {
 
+		// 默认使用Tomcat
 		@Bean
 		public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
 			return new TomcatServletWebServerFactory();
@@ -71,6 +74,7 @@ class ServletWebServerFactoryConfiguration {
 	@ConditionalOnMissingBean(value = ServletWebServerFactory.class, search = SearchStrategy.CURRENT)
 	public static class EmbeddedJetty {
 
+		// 如要使用Jetty，将spring-boot-starter-tomcat排除，引入spring-boot-starter-jetty
 		@Bean
 		public JettyServletWebServerFactory JettyServletWebServerFactory() {
 			return new JettyServletWebServerFactory();

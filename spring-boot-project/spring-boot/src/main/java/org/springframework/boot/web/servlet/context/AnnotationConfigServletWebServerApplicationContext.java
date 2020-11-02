@@ -70,6 +70,7 @@ public class AnnotationConfigServletWebServerApplicationContext
 	 * {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigServletWebServerApplicationContext() {
+		// 注册ConfigurationClassPostProcessor，AutowiredAnnotationBeanPostProcessor等，相当于<context:annotation-config/>
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}

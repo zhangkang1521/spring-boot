@@ -263,8 +263,10 @@ public class SpringApplication {
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
 		this.webApplicationType = deduceWebApplicationType();
+		// 从spring.factories中读取ApplicationContextInitializer，应用程序初始化器
 		setInitializers((Collection) getSpringFactoriesInstances(
 				ApplicationContextInitializer.class));
+		// 从spring.factories中读取ApplicationListener，应用程序监听器
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
@@ -318,12 +320,15 @@ public class SpringApplication {
 					applicationArguments);
 			configureIgnoreBeanInfo(environment);
 			Banner printedBanner = printBanner(environment);
+			// 创建ApplicationContext，AnnotationConfigServletWebServerApplicationContext
 			context = createApplicationContext();
 			exceptionReporters = getSpringFactoriesInstances(
 					SpringBootExceptionReporter.class,
 					new Class[] { ConfigurableApplicationContext.class }, context);
+			// 将environment等设置到applicationContext
 			prepareContext(context, environment, listeners, applicationArguments,
 					printedBanner);
+			// spring容器refresh
 			refreshContext(context);
 			afterRefresh(context, applicationArguments);
 			stopWatch.stop();
@@ -332,6 +337,7 @@ public class SpringApplication {
 						.logStarted(getApplicationLog(), stopWatch);
 			}
 			listeners.started(context);
+			//
 			callRunners(context, applicationArguments);
 		}
 		catch (Throwable ex) {
@@ -387,6 +393,7 @@ public class SpringApplication {
 		// Load the sources
 		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
+		//
 		load(context, sources.toArray(new Object[0]));
 		listeners.contextLoaded(context);
 	}

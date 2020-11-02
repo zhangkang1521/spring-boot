@@ -77,7 +77,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 @Documented
 @Inherited
 @AutoConfigurationPackage
-@Import(AutoConfigurationImportSelector.class)
+@Import(AutoConfigurationImportSelector.class) // 自动配置
 public @interface EnableAutoConfiguration {
 
 	String ENABLED_OVERRIDE_PROPERTY = "spring.boot.enableautoconfiguration";

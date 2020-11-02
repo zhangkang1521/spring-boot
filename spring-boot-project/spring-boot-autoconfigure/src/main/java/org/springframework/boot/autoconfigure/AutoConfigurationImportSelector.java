@@ -93,6 +93,7 @@ public class AutoConfigurationImportSelector
 		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
 				.loadMetadata(this.beanClassLoader);
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
+		// spring.factories org.springframework.boot.autoconfigure.EnableAutoConfiguration
 		List<String> configurations = getCandidateConfigurations(annotationMetadata,
 				attributes);
 		configurations = removeDuplicates(configurations);

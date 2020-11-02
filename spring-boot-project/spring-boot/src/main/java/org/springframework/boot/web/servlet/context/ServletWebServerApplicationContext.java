@@ -147,8 +147,10 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 
 	@Override
 	protected void onRefresh() {
+		// Spring容器refresh时调用
 		super.onRefresh();
 		try {
+			// 创建内嵌的web服务器
 			createWebServer();
 		}
 		catch (Throwable ex) {
@@ -159,6 +161,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	@Override
 	protected void finishRefresh() {
 		super.finishRefresh();
+		// 启动服务器
 		WebServer webServer = startWebServer();
 		if (webServer != null) {
 			publishEvent(new ServletWebServerInitializedEvent(webServer, this));
@@ -175,6 +178,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		WebServer webServer = this.webServer;
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
+			// ServletWebServerFactory是自动配置的，参考ServletWebServerFactoryAutoConfiguration
 			ServletWebServerFactory factory = getWebServerFactory();
 			this.webServer = factory.getWebServer(getSelfInitializer());
 		}
