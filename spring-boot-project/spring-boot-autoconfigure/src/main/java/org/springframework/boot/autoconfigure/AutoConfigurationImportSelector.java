@@ -87,6 +87,7 @@ public class AutoConfigurationImportSelector
 
 	@Override
 	public String[] selectImports(AnnotationMetadata annotationMetadata) {
+		// 自动配置入口
 		if (!isEnabled(annotationMetadata)) {
 			return NO_IMPORTS;
 		}

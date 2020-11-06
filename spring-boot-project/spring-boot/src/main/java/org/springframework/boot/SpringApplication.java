@@ -261,12 +261,13 @@ public class SpringApplication {
 	public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
+		// 对应启动类 org.zk.springboot.demo.Application
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
 		this.webApplicationType = deduceWebApplicationType();
-		// 从spring.factories中读取ApplicationContextInitializer，应用程序初始化器
+		// 从spring.factories中读取ApplicationContextInitializer，应用程序初始化器 6个
 		setInitializers((Collection) getSpringFactoriesInstances(
 				ApplicationContextInitializer.class));
-		// 从spring.factories中读取ApplicationListener，应用程序监听器
+		// 从spring.factories中读取ApplicationListener，应用程序监听器 10个
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
