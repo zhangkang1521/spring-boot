@@ -49,12 +49,14 @@ class OnPropertyCondition extends SpringBootCondition {
 	@Override
 	public ConditionOutcome getMatchOutcome(ConditionContext context,
 			AnnotatedTypeMetadata metadata) {
+		// 条件断点：metadata instanceof MethodMetadataReadingVisitor && ((MethodMetadataReadingVisitor) metadata).getMethodName().equals("user")
 		List<AnnotationAttributes> allAnnotationAttributes = annotationAttributesFromMultiValueMap(
 				metadata.getAllAnnotationAttributes(
 						ConditionalOnProperty.class.getName()));
 		List<ConditionMessage> noMatch = new ArrayList<>();
 		List<ConditionMessage> match = new ArrayList<>();
 		for (AnnotationAttributes annotationAttributes : allAnnotationAttributes) {
+			// 判断是否匹配
 			ConditionOutcome outcome = determineOutcome(annotationAttributes,
 					context.getEnvironment());
 			(outcome.isMatch() ? match : noMatch).add(outcome.getConditionMessage());
@@ -94,12 +96,14 @@ class OnPropertyCondition extends SpringBootCondition {
 		List<String> missingProperties = new ArrayList<>();
 		List<String> nonMatchingProperties = new ArrayList<>();
 		spec.collectProperties(resolver, missingProperties, nonMatchingProperties);
+		// 配置未找到
 		if (!missingProperties.isEmpty()) {
 			return ConditionOutcome.noMatch(
 					ConditionMessage.forCondition(ConditionalOnProperty.class, spec)
 							.didNotFind("property", "properties")
 							.items(Style.QUOTE, missingProperties));
 		}
+		// 值不匹配
 		if (!nonMatchingProperties.isEmpty()) {
 			return ConditionOutcome.noMatch(
 					ConditionMessage.forCondition(ConditionalOnProperty.class, spec)
@@ -107,6 +111,7 @@ class OnPropertyCondition extends SpringBootCondition {
 									"different value in properties")
 							.items(Style.QUOTE, nonMatchingProperties));
 		}
+		// 匹配
 		return ConditionOutcome.match(ConditionMessage
 				.forCondition(ConditionalOnProperty.class, spec).because("matched"));
 	}
@@ -152,17 +157,19 @@ class OnPropertyCondition extends SpringBootCondition {
 					}
 				}
 				else {
-					if (!this.matchIfMissing) {
+					if (!this.matchIfMissing) { // 没有配置认为匹配
 						missing.add(name);
 					}
 				}
 			}
 		}
 
+		// value:配置文件中的值； requiredValue:注解中的值
 		private boolean isMatch(String value, String requiredValue) {
 			if (StringUtils.hasLength(requiredValue)) {
 				return requiredValue.equalsIgnoreCase(value);
 			}
+			// 注解中未指定，只要不是配false就匹配
 			return !"false".equalsIgnoreCase(value);
 		}
 

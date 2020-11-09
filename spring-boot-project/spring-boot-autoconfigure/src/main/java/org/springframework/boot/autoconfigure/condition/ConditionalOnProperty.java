@@ -109,6 +109,7 @@ public @interface ConditionalOnProperty {
 	String[] name() default {};
 
 	/**
+	 * 配置的值匹配则满足条件
 	 * The string representation of the expected value for the properties. If not
 	 * specified, the property must <strong>not</strong> be equals to {@code false}.
 	 * @return the expected value
@@ -116,6 +117,7 @@ public @interface ConditionalOnProperty {
 	String havingValue() default "";
 
 	/**
+	 * 没有值认为匹配
 	 * Specify if the condition should match if the property is not set. Defaults to
 	 * {@code false}.
 	 * @return if should match if the property is missing

@@ -120,8 +120,10 @@ class OnClassCondition extends SpringBootCondition
 	@Override
 	public ConditionOutcome getMatchOutcome(ConditionContext context,
 			AnnotatedTypeMetadata metadata) {
+		// 条件断点：metadata instanceof  MethodMetadataReadingVisitor && ((MethodMetadataReadingVisitor) metadata).getMethodName().contains("user")
 		ClassLoader classLoader = context.getClassLoader();
 		ConditionMessage matchMessage = ConditionMessage.empty();
+		// ConditionalOnClass注解
 		List<String> onClasses = getCandidates(metadata, ConditionalOnClass.class);
 		if (onClasses != null) {
 			List<String> missing = getMatches(onClasses, MatchType.MISSING, classLoader);
@@ -135,6 +137,7 @@ class OnClassCondition extends SpringBootCondition
 					.found("required class", "required classes").items(Style.QUOTE,
 							getMatches(onClasses, MatchType.PRESENT, classLoader));
 		}
+		// ConditionalOnMissingClass注解
 		List<String> onMissingClasses = getCandidates(metadata,
 				ConditionalOnMissingClass.class);
 		if (onMissingClasses != null) {
@@ -221,10 +224,10 @@ class OnClassCondition extends SpringBootCondition
 			}
 			try {
 				forName(className, classLoader);
-				return true;
+				return true; // 能找到这个类
 			}
 			catch (Throwable ex) {
-				return false;
+				return false; // 找不到
 			}
 		}
 

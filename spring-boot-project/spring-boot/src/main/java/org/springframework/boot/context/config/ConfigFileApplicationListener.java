@@ -67,6 +67,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 配置文件读取
  * {@link EnvironmentPostProcessor} that configures the context environment by loading
  * properties from well known file locations. By default properties will be loaded from
  * 'application.properties' and/or 'application.yml' files in the following locations:
@@ -162,6 +163,7 @@ public class ConfigFileApplicationListener
 		return true;
 	}
 
+	// 实现事件监听接口
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof ApplicationEnvironmentPreparedEvent) {
@@ -189,6 +191,7 @@ public class ConfigFileApplicationListener
 				getClass().getClassLoader());
 	}
 
+	// 实现EnvironmentPostProcessor接口
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment,
 			SpringApplication application) {
